@@ -1,14 +1,15 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
     const [hackathons, setHackathons] = useState([]);
   
     useEffect(() => {
-      fetch("http://localhost:3002/hackathons?limit=3")
-        .then((res) => res.json())
-        .then((data) => setHackathons(data))
-        .catch((err) => console.error("Erreur de chargement :", err));
-    }, []);
+        fetch("http://localhost:3002/hackathons?limit=3")
+          .then((res) => res.json())
+          .then((data) => setHackathons(data))
+          .catch((err) => console.error("Erreur de chargement :", err));
+      }, []);
   
     return (
       <div className="p-4 text-center">

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
@@ -12,20 +13,18 @@ import JoinTeam from "./pages/JoinTeam";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/hackathons" element={<Hackathons />} />
-          <Route path="/hackathons/:id" element={<HackathonDetail />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/create-team" element={<CreateTeam />} />
-          <Route path="/join-team" element={<JoinTeam />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <>
+    <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/hackathons" element={<Hackathons />} />
+        <Route path="/hackathons/:id" element={<HackathonDetail />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/create-team" element={<CreateTeam />} />
+        <Route path="/join-team" element={<JoinTeam />} />
+      </Routes>
+    </>
   );
 }
 

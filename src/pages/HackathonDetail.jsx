@@ -8,11 +8,11 @@ const HackathonDetail = () => {
     const [hackathon, setHackathon] = useState(null);
   
     useEffect(() => {
-      fetch(`http://localhost:3002/hackathons/${id}`)
-        .then((res) => res.json())
-        .then((data) => setHackathon(data))
-        .catch((err) => console.error("Erreur de chargement :", err));
-    }, [id]);
+        fetch(`http://localhost:3002/hackathons/${id}`)
+          .then((res) => res.json())
+          .then((data) => setHackathon(data))
+          .catch((err) => console.error("Erreur de chargement :", err));
+      }, [id]);
   
     if (!hackathon) return <p>Chargement...</p>;
   

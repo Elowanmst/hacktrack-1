@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 
+
 const schema = z.object({
   teamName: z.string().min(3, "Nom trop court"),
   description: z.string().min(10, "Description trop courte"),
@@ -15,9 +16,25 @@ const CreateTeam = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("Équipe créée :", data);
-    navigate("/hackathons"); 
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("http://localhost:3002/teams/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (response.ok) {
+        console.log("Équipe créée :", data);
+        navigate("/hackathons");
+      } else {
+        console.error("Erreur lors de la création de l'équipe");
+      }
+    } catch (err) {
+      console.error("Erreur réseau :", err);
+    }
   };
 
   return (

@@ -1,6 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3002/teams/join/${teamCode}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.ok) {
+        console.log("Rejoint avec succès :", teamCode);
+        navigate("/hackathons");
+      } else {
+        console.error("Erreur lors de la tentative de rejoindre l'équipe");
+      }
+    } catch (err) {
+      console.error("Erreur réseau :", err);
+    }
+  };
+
 const JoinTeam = () => {
   const [teamCode, setTeamCode] = useState("");
   const navigate = useNavigate();

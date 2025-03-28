@@ -5,11 +5,11 @@ const Hackathons = () => {
     const [page, setPage] = useState(1);
   
     useEffect(() => {
-      fetch(`http://localhost:3002/hackathons?page=${page}`)
-        .then((res) => res.json())
-        .then((data) => setHackathons(data))
-        .catch((err) => console.error("Erreur de chargement :", err));
-    }, [page]);
+        fetch(`http://localhost:3002/hackathons?page=${page}`)
+          .then((res) => res.json())
+          .then((data) => setHackathons(data))
+          .catch((err) => console.error("Erreur de chargement :", err));
+      }, [page]);
   
     return (
       <div className="p-4">
