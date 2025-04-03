@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   
     useEffect(() => {
       const token = localStorage.getItem("jwt");
+      console.log("Token récupéré :", token);
       if (token) {
         fetch("http://localhost:3002", {
           method: "POST",
