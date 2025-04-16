@@ -68,4 +68,6 @@ hacktrack-1/
 
 pour voir la vidéo de demo de hacktrack je vous laisse cliquer sur le lien ci dessous 
 🎬 [Télécharger la vidéo de démonstration](hacktrack-1/src/assets/video-demo-hacktrack.mov)
+si le lien ne marche pas aller directement chercher la vidéo : hacktrack-1/src/assets/video-demo-hacktrack.mov
+Sinon je la met egalement dans le depot Myges
 
