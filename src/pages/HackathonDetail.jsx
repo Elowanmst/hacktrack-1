@@ -1,63 +1,70 @@
-import { useParams, Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const HackathonDetail = () => {
-  const { id } = useParams();
-  const { user } = useContext(AuthContext);
-  const [hackathon, setHackathon] = useState(null);
-
-  console.log("Utilisateur connecté :", user);
+  const { id } = useParams(); // Récupère l'ID du hackathon depuis l'URL
+  const [hackathon, setHackathon] = useState(null); // Détails du hackathon
+  const [teams, setTeams] = useState([]); // Équipes associées
+  const [loading, setLoading] = useState(true); // État de chargement
+  const [error, setError] = useState(null); // État d'erreur
 
   useEffect(() => {
-    fetch(`http://localhost:3002/hackathons/${id}`)
-      .then((res) => res.json())
-      .then((data) => setHackathon(data))
-      .catch((err) => console.error("Erreur de chargement :", err));
+    // Récupère les détails du hackathon et les équipes associées
+    const fetchHackathonDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3002/hackathons/${id}`);
+        if (!response.ok) {
+          throw new Error("Erreur lors du chargement des données");
+        }
+        const data = await response.json();
+        setHackathon(data); // Stocke les détails du hackathon
+        setTeams(data.teams || []); // Stocke les équipes associées (si disponibles)
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHackathonDetails();
   }, [id]);
 
-  if (!hackathon) return <p>Chargement...</p>;
+  if (loading) {
+    return <p>Chargement...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500">Erreur : {error}</p>;
+  }
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">{hackathon.name}</h1>
-      <p>Date: {hackathon.date}</p>
-      <p>Thème: {hackathon.theme}</p>
-      <h2 className="text-xl font-bold mt-4">Équipes inscrites :</h2>
-      <ul>
-        {hackathon.teams.map((team) => (
-          <li key={team.id} className="mb-2 p-2 border rounded">
-            <h3 className="text-lg font-bold">{team.name}</h3>
-            <p>Membres : {team.members.join(", ")}</p>
-          </li>
-        ))}
-      </ul>
-
-      {user ? (
+      {/* Affichage des détails du hackathon */}
+      {hackathon && (
         <>
-          <Link to="/join-team">
-            <button className="bg-green-500 text-white px-4 py-2 rounded mt-4 border border-red-500">
-              Rejoindre une équipe
-            </button>
-          </Link>
-          <Link to="/create-team">
-            <button className="bg-green-500 text-white px-4 py-2 rounded mt-4 border border-red-500">
-              Créer une équipe
-            </button>
-          </Link>
+          <h1 className="text-3xl font-bold mb-4">{hackathon.name}</h1>
+          <p className="mb-4"><strong>Date :</strong> {hackathon.date}</p>
+          <p className="mb-4"><strong>Description :</strong> {hackathon.description}</p>
         </>
-      ) : (
-        <p className="text-red-500 mt-4">
-          Vous devez être connecté pour effectuer cette action.{" "}
-          <Link to="/login" className="text-blue-500 underline">
-            Connectez-vous
-          </Link>{" "}
-          ou{" "}
-          <Link to="/register" className="text-blue-500 underline">
-            inscrivez-vous
-          </Link>.
-        </p>
       )}
+
+      {/* Affichage des équipes inscrites */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Équipes inscrites</h2>
+        {teams.length > 0 ? (
+          <ul>
+            {teams.map((team) => (
+              <li key={team.id} className="mb-2 p-4 border rounded">
+                <p><strong>ID :</strong> {team.id}</p>
+                <p><strong>Nom de l'équipe :</strong> {team.name}</p>
+                <p><strong>Hackathon :</strong> {hackathon.name}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Aucune équipe inscrite pour ce hackathon.</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 
 const JoinTeam = () => {
   const { user } = useContext(AuthContext);
-  const [teamId, setTeamId] = useState(""); // Utiliser teamId au lieu de teamCode
+  const [teamId, setTeamId] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,10 +25,11 @@ const JoinTeam = () => {
       });
 
       if (response.ok) {
-        console.log("Rejoint avec succès :", teamId);
+        console.log("Rejoint avec succès l'équipe :", teamId);
         navigate("/hackathons");
       } else {
-        console.error("Erreur lors de la tentative de rejoindre l'équipe");
+        const error = await response.json();
+        console.error("Erreur lors de la tentative de rejoindre l'équipe :", error);
       }
     } catch (err) {
       console.error("Erreur réseau :", err);
@@ -39,13 +40,17 @@ const JoinTeam = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Rejoindre une équipe</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={teamId}
-          onChange={(e) => setTeamId(e.target.value)}
-          placeholder="Entrez l'ID de l'équipe"
-          className="block mb-2 p-2 border"
-        />
+        <div className="mb-4">
+          <label htmlFor="teamId" className="block mb-2">ID de l'équipe :</label>
+          <input
+            id="teamId"
+            type="text"
+            value={teamId}
+            onChange={(e) => setTeamId(e.target.value)}
+            placeholder="Entrez l'ID de l'équipe"
+            className="block w-full p-2 border"
+          />
+        </div>
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
           Rejoindre
         </button>

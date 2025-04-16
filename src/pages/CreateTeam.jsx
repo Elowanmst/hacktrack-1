@@ -6,7 +6,7 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const schema = z.object({
-  teamName: z.string().min(3, "Nom trop court"),
+  teamName: z.string().min(1, "Le nom de l'équipe est requis"),
   hackathonId: z.string().min(1, "Veuillez sélectionner un hackathon"),
 });
 
@@ -38,14 +38,19 @@ const CreateTeam = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.teamName,
+          hackathonId: parseInt(data.hackathonId),
+        }),
       });
 
       if (response.ok) {
-        console.log("Équipe créée :", data);
+        const result = await response.json();
+        console.log("Équipe créée avec succès :", result.team);
         navigate("/hackathons");
       } else {
-        console.error("Erreur lors de la création de l'équipe");
+        const error = await response.json();
+        console.error("Erreur lors de la création de l'équipe :", error);
       }
     } catch (err) {
       console.error("Erreur réseau :", err);
@@ -53,24 +58,40 @@ const CreateTeam = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-4">
+    <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Créer une équipe</h1>
-
-      <input {...register("teamName")} placeholder="Nom de l'équipe" className="block mb-2 p-2 border" />
-      {errors.teamName && <p className="text-red-500">{errors.teamName.message}</p>}
-
-      <select {...register("hackathonId")} className="block mb-2 p-2 border">
-        <option value="">Sélectionnez un hackathon</option>
-        {hackathons.map((hackathon) => (
-          <option key={hackathon.id} value={hackathon.id}>
-            {hackathon.name}
-          </option>
-        ))}
-      </select>
-      {errors.hackathonId && <p className="text-red-500">{errors.hackathonId.message}</p>}
-
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Créer</button>
-    </form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          <label htmlFor="teamName" className="block mb-2">Nom de l'équipe :</label>
+          <input
+            id="teamName"
+            type="text"
+            {...register("teamName")}
+            className="block w-full p-2 border"
+          />
+          {errors.teamName && <p className="text-red-500">{errors.teamName.message}</p>}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="hackathonId" className="block mb-2">Sélectionnez un hackathon :</label>
+          <select
+            id="hackathonId"
+            {...register("hackathonId")}
+            className="block w-full p-2 border"
+          >
+            <option value="">-- Choisir un hackathon --</option>
+            {hackathons.map((hackathon) => (
+              <option key={hackathon.id} value={hackathon.id}>
+                {hackathon.name}
+              </option>
+            ))}
+          </select>
+          {errors.hackathonId && <p className="text-red-500">{errors.hackathonId.message}</p>}
+        </div>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+          Créer
+        </button>
+      </form>
+    </div>
   );
 };
 
