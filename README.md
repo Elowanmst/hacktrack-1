@@ -67,5 +67,5 @@ hacktrack-1/
 ## Vidéo de démo de hacktrack
 
 pour voir la vidéo de demo de hacktrack je vous laisse cliquer sur le lien ci dessous 
-🎬 [Télécharger la vidéo de démonstration](hacktrack--/hacktrack-1/src/assets/video-demo-hacktrack.mov)
+🎬 [Télécharger la vidéo de démonstration](hacktrack-1/src/assets/video-demo-hacktrack.mov)
 
