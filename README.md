@@ -47,7 +47,7 @@ https://github.com/hellodamien/hacktrack-api
 ## structure du projet 
 
 mon projet est structurer comme suit ; 
-
+```bash
 hacktrack-1/
 ├── src/
 │   ├── components/       # Composants réutilisables
@@ -61,5 +61,5 @@ hacktrack-1/
 ├── [vite.config.js](http://_vscodecontentref_/5)        # Configuration de Vite
 └── [tailwind.config.js](http://_vscodecontentref_/6)    # Configuration de Tailwind CSS
 
-
+```
 
